@@ -987,7 +987,9 @@ class LSTMLayer(MergeLayer):
             # (n_time_steps, n_batch, 4*num_units).
             input = T.dot(input, W_in_stacked) + b_stacked
 
-        # At each call to scan, input_n will be (n_time_steps, 4*num_units).
+        # At each call to scan, input_n will be (n_batch, 4*num_units)
+        # such that it is a slice across all sequences in the batch representing
+        # the input values for a time step
         # We define a slicing function that extract the input to each LSTM gate
         def slice_w(x, n):
             return x[:, n*self.num_units:(n+1)*self.num_units]
